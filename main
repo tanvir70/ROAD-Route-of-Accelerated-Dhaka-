@@ -1,0 +1,648 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<windows.h>
+#include<string.h>
+
+void gotoxy(int ,int );
+void menu1();
+void menu2();
+void add();
+void Administration_add();
+void search();
+void modify();
+void deleterec();
+void view();
+void Administration();
+void Administration_menu();
+void login();
+void sign_up();
+void sign_in();
+void road_title();
+void box(int a,int b,int c,int d);
+struct road
+{
+    char start[50];
+    char end[50];
+    char bus[50];
+    char uname[50];
+    char uphone[50];
+    char user_id[50];
+    char password[50];
+
+};
+void road_title(){
+    system("cls");
+    box(7,6,73,22);
+    gotoxy(15,8);
+    printf("      ::::::::::  ::::::::      :::     ::::::::::");
+    gotoxy(15,9);
+    printf("     :+:    :+: :+:    :+:   :+: :+:   :+:    :+: ");
+    gotoxy(15,10);
+    printf("    +:+    +:+ +:+    +:+  +:+   +:+  +:+    +:+  ");
+    gotoxy(15,11);
+    printf("   +#++:++#:  +#+    +:+ +#++:++#++: +#+    +:+   ");
+    gotoxy(15,12);
+    printf("  +#+    +#+ +#+    +#+ +#+     +#+ +#+    +#+    ");
+    gotoxy(15,13);
+    printf(" #+#    #+# #+#    #+# #+#     #+# #+#    #+#     ");
+    gotoxy(15,14);
+    printf("###    ###  ########  ###     ### #########       ");
+    gotoxy(15,16);
+    printf(" ROUTE ------ OF ---- ACCELERATED --- DHAKA          ");
+    gotoxy(15,20);
+    printf("press any key to continue.....................");
+    getch();
+}
+void box(int a,int b,int c,int d)
+{
+	int i,j;
+
+	for(i=a;i<c;i++)
+	{
+		gotoxy(i,b);printf("\xcd");
+		gotoxy(i,d);printf("\xcd");
+	}
+	for(j=b;j<d;j++)
+	{
+		gotoxy(a,j);printf("\xba");
+		gotoxy(c,j);printf("\xba");
+	}
+		gotoxy(a,b);printf("\xc9");
+		gotoxy(c,b);printf("\xbb");
+		gotoxy(a,d);printf("\xc8");
+		gotoxy(c,d);printf("\xbc");
+}
+void sign_up()
+{
+    struct road std;
+    FILE *fp;
+    system("cls");
+    box(7,3,65,20);
+    gotoxy(10,5);
+    puts("<--:Create Account:-->");
+    gotoxy(10,7);
+    printf("Enter User Name:  ");
+    scanf("%s",std.uname);
+    gotoxy(10,8);
+    printf("Enter Phone Number:  ");
+    scanf("%s",std.uphone);
+    gotoxy(10,9);
+    printf("Enter User Id:  ");
+    scanf("%s",std.user_id);
+    gotoxy(10,10);
+
+    printf("Enter Password:  ");
+    scanf("%s",std.password);
+    fp = fopen ("account.txt", "wb+");
+    if (fp == NULL)
+    {
+        printf("\nError opened file\n");
+        exit (1);
+    }
+    fwrite(&std, sizeof(struct road), 1, fp);
+    fclose (fp);
+    system("cls");
+    box(2,2,55,14);
+    gotoxy(5,5);
+    printf("Account Created Successfully.");
+    gotoxy(5,11);
+    printf("Press any key to continue...");
+    getch();
+    sign_in();
+}
+void sign_in()
+{
+    char user_id[50],password[50];
+    FILE *fp;
+    struct road std;
+    system("cls");
+    box(7,3,70,17);
+    gotoxy(10,6);
+    printf("<--:LOGIN TO YOUR ACCOUNT:-->");
+    gotoxy(11,8);
+    printf("Enter User Id: ");
+    scanf("%s",user_id);
+    gotoxy(11,9);
+    printf("Enter Password: ");
+    scanf("%s",password);
+    fp=fopen("account.txt","rb+");
+    if(fp==NULL)
+    {
+        printf("\nFile not found\n");
+        return 0;
+    }
+    while(fread(&std, sizeof(struct road), 1, fp)){
+        if(strcmp(user_id,std.user_id) == 0 && strcmp(password,std.password)==0)
+        {
+
+            menu2();
+        }
+        else
+        {
+            gotoxy(11,14);
+            printf("Invalid Username or Password");
+            box(7,19,70,21);
+            gotoxy(10,20);
+            printf(" Press any key to go back........");
+            getch();
+
+            menu1();
+        }
+    }
+    fclose(fp);
+    system("cls");
+}
+void menu1()
+{
+     int choice;
+    system("cls");
+
+    box(7,3,70,17);
+    gotoxy(10,5);
+    printf("<--:Menu:-->");
+    gotoxy(10,7);
+    printf("1 : Sign In.");
+    gotoxy(10,8);
+    printf("2 : Sign Up.");
+    gotoxy(10,9);
+    printf("3 : Administration.");
+    gotoxy(10,10);
+    printf("4 : Exit.");
+    gotoxy(10,14);
+    printf("Enter your choice: ");
+    scanf("%d",&choice);
+    switch(choice)
+    {
+    case 1:
+        sign_in();
+        break;
+
+    case 2:
+        sign_up();
+        break;
+
+    case 3:
+        Administration();
+        break;
+
+    case 4:
+        exit(1);
+        break;
+
+    default:
+        gotoxy(10,15);
+        printf("Invalid Choice.");
+    }
+}
+int main()
+{
+    system("color 02");
+    road_title();
+    system("cls");
+    menu1();
+    return 0;
+}
+void menu2()
+{
+    int choice;
+    system("cls");
+    box(7,3,73,20);
+    gotoxy(10,5);
+    printf("<--:MENU:-->");
+    gotoxy(10,7);
+    printf("Enter appropriate number to perform following task.");
+    gotoxy(10,9);
+    printf("1 : Add Record.");
+    gotoxy(10,10);
+    printf("2 : Search Record.");
+    gotoxy(10,11);
+    printf("3 : Exit.");
+    gotoxy(10,17);
+    printf("Enter your choice: ");
+    scanf("%d",&choice);
+    switch(choice)
+    {
+    case 1:
+add();
+        break;
+
+    case 2:
+        search();
+        break;
+
+    case 3:
+        exit(1);
+        break;
+
+    default:
+        gotoxy(10,15);
+        printf("Invalid Choice.");
+    }
+}
+void add()
+{
+    FILE *fp;
+    struct road std;
+    char another ='y';
+    system("cls");
+    box(7,3,73,17);
+
+    fp = fopen("record.txt","a+");
+    if(fp == NULL){
+        gotoxy(10,5);
+        printf("Error opening file");
+        exit(1);
+    }
+    fflush(stdin);
+    while(another == 'y')
+
+ {
+        gotoxy(10,5);
+        printf("<--:ADD RECORD:-->");
+        gotoxy(10,7);
+        printf("Enter Details of Road.");
+        gotoxy(10,9);
+        printf("Enter Starting Point: ");
+        gets(std.start);
+        gotoxy(10,10);
+        printf("Enter End Point : ");
+        gets(std.end);
+        gotoxy(10,11);
+        printf("Enter Bus Name: ");
+        gets(std.bus);
+
+        fwrite(&std,sizeof(std),1,fp);
+        gotoxy(10,15);
+        printf("Want to add another record? Then press 'y' else 'n'.");
+        fflush(stdin);
+        another = getch();
+        system("cls");
+        box(7,3,73,17);
+        fflush(stdin);
+    }
+    fclose(fp);
+    system("cls");
+    box(7,9,40,11);
+    gotoxy(10,10);
+    printf("Press any key to continue.");
+    getch();
+    menu2();
+}
+void Administration_add()
+
+{
+    FILE *fp;
+    struct road std;
+    char another ='y';
+    system("cls");
+    box(7,3,73,17);
+
+    fp = fopen("record.txt","a+");
+    if(fp == NULL){
+        gotoxy(10,5);
+        printf("Error opening file");
+        exit(1);
+    }
+    fflush(stdin);
+    while(another == 'y')
+    {
+        gotoxy(10,5);
+        printf("<--:ADD RECORD:-->");
+        gotoxy(10,7);
+        printf("Enter Details of Road.");
+        gotoxy(10,9);
+        printf("Enter Starting Point: ");
+        gets(std.start);
+        gotoxy(10,10);
+        printf("Enter End Point : ");
+        gets(std.end);
+        gotoxy(10,11);
+        printf("Enter Bus Name: ");
+        gets(std.bus);
+
+        fwrite(&std,sizeof(std),1,fp);
+        gotoxy(10,15);
+        printf("Want to add another record? Then press 'y' else 'n'.");
+
+        fflush(stdin);
+        another = getch();
+        system("cls");
+        box(7,3,73,17);
+        fflush(stdin);
+    }
+    fclose(fp);
+    system("cls");
+    box(7,9,40,11);
+    gotoxy(10,10);
+    printf("Press any key to continue.");
+    getch();
+    Administration_menu();
+
+
+}
+void search()
+{
+    FILE *fp;
+    struct road std;
+    char start[50];
+    char end[50];
+    system("cls");
+    box(7,1,73,17);
+    gotoxy(10,3);
+    printf("<--:SEARCH RECORD:-->");
+    gotoxy(10,5);
+    printf("Enter Starting Point : ");
+    fflush(stdin);
+    gets(start);
+    gotoxy(10,7);
+    printf("Enter Ending Point : ");
+
+    fflush(stdin);
+    gets(end);
+    fp = fopen("record.txt","r+");
+    if(fp == NULL){
+        gotoxy(10,11);
+        printf("Error opening file");
+        exit(1);
+    }
+    while(fread(&std,sizeof(std),1,fp ) == 1){
+        if(strcmp(start,std.start) == 0 && strcmp(end,std.end) == 0){
+            gotoxy(10,12);
+            printf("Starting Point : %s",std.start);
+            gotoxy(10,13);
+            printf("Ending Point : %s",std.end);
+            gotoxy(10,14);
+            printf("Bus : %s",std.bus);
+            gotoxy(10,15);
+
+        }
+        else
+        {
+            printf("Corrigendum or data dose not exists ...");
+        }
+    }
+    fclose(fp);
+    box(7,19,73,21);
+    gotoxy(10,20);
+    printf("Press any key to continue...........");
+    getch();
+    menu2();
+}
+void Administration()
+{
+    int choice;
+    system("cls");
+    box(7,1,73,15);
+    gotoxy(10,3);
+    printf("<--:Administration:-->");
+    gotoxy(10,5);
+    printf("1 : Login.");
+    gotoxy(10,6);
+    printf("2 : Exit.");
+    gotoxy(10,12);
+    printf("Enter your choice:");
+    scanf("%d",&choice);
+    switch(choice)
+    {
+    case 1:
+        login();
+        break;
+
+    case 2:
+        exit(1);
+        break;
+
+    default:
+        gotoxy(10,17);
+        printf("Invalid Choice.");
+    }
+    box(7,9,40,11);
+    gotoxy(10,10);
+    printf("Press any key to continue.");
+    getch();
+    menu2();
+
+
+}
+void login()
+{
+    system("cls");
+    box(7,3,70,17);
+    char user[30];
+    char pass[30];
+    gotoxy(10,5);
+    printf("<--:Admin Login:-->");
+    gotoxy(10,7);
+    printf("Enter User Id:  ");
+    fflush(stdin);
+    gets(user);
+    gotoxy(10,9);
+    printf("Enter Password:  ");
+    fflush(stdin);
+    gets(pass);
+    if(strcmp(user,"orbs") == 0 && strcmp(pass,"233839") == 0)
+    {
+        Administration_menu();
+
+    }
+
+    else
+        gotoxy(10,14);
+        printf("Wrong User Id or Password");
+
+    box(7,19,70,21);
+    gotoxy(10,20);
+    printf("Press any key to go back........");
+    getch();
+    menu2();
+
+
+}
+void modify()
+{
+    char start[50];
+    char end[50];
+    FILE *fp;
+    struct road std;
+    system("cls");
+    box(7,1,73,22);
+    gotoxy(10,3);
+    printf("<--:MODIFY:-->");
+    gotoxy(10,5);
+    printf("Enter Starting Point : ");
+    fflush(stdin);
+    gets(start);
+    gotoxy(10,7);
+    printf("Enter Ending Point : ");
+    fflush(stdin);
+    gets(end);
+    fp = fopen("record.txt","r+");
+    if(fp == NULL){
+        gotoxy(10,11);
+        printf("Error opening file");
+        exit(1);
+    }
+    rewind(fp);
+    fflush(stdin);
+    while(fread(&std,sizeof(std),1,fp) == 1)
+    {
+        if(strcmp(start,std.start) == 0 && strcmp(end,std.end) == 0){
+        system("cls");
+        box(7,1,73,22);
+
+        gotoxy(10,3);
+        printf("<--:MODIFY:-->");
+        gotoxy(10,5);
+printf("Enter Starting Point: ");
+        gets(std.start);
+        gotoxy(10,7);
+        printf("Enter End Point : ");
+        gets(std.end);
+        gotoxy(10,9);
+        printf("Enter Bus Name: ");
+        gets(std.bus);
+        fseek(fp ,-sizeof(std),SEEK_CUR);
+        fwrite(&std,sizeof(std),1,fp);
+        break;
+        }
+    }
+    fclose(fp);
+    system("cls");
+    box(7,5,40,13);
+    gotoxy(10,7);
+    printf("Successfully Modified.");
+    gotoxy(10,10);
+    printf("Press any key to continue.");
+    getch();
+    Administration_menu();
+}
+void view()
+{
+	FILE *fp;
+    struct road std;
+	int i;
+	if((fp=fopen("record.txt","r"))==NULL)
+		exit(0);
+
+         system("cls");
+	printf("start\t");
+	printf("\tend\t");
+	printf("\tbus\n");
+
+	for(i=0;i<118;i++)
+		printf("*");
+	while(fread(&std,sizeof(std),1,fp)==1)
+	{
+		printf("\n%s\t\t%s\t\t%s\n",std.start,std.end,std.bus);
+	}
+	printf("\n");
+	for(i=0;i<118;i++)
+		printf("*");
+	fclose(fp);
+	getch();
+	Administration_menu();
+}
+void deleterec()
+{
+    char start[50];
+    char end[50];
+    FILE *fp,*ft;
+    struct road std;
+    system("cls");
+    box(7,1,73,15);
+    gotoxy(10,3);
+    printf("<--:DELETE:-->");
+    gotoxy(10,5);
+    printf("Enter Starting Point : ");
+    fflush(stdin);
+    gets(start);
+    gotoxy(10,7);
+    printf("Enter Ending Point : ");
+    fflush(stdin);
+    gets(end);
+    fp = fopen("record.txt","r+");
+    if(fp == NULL){
+        gotoxy(10,8);
+        printf("Error opening file");
+        exit(1);
+    }
+    ft = fopen("temp.txt","w+");
+    if(ft == NULL){
+        gotoxy(10,8);
+        printf("Error opening file");
+        exit(1);
+    }
+    while(fread(&std,sizeof(std),1,fp) == 1){
+        if(strcmp(start,std.start) != 0 && strcmp(end,std.end) != 0)
+            fwrite(&std,sizeof(std),1,ft);
+    }
+    fclose(fp);
+    fclose(ft);
+    remove("record.txt");
+    rename("temp.txt","record.txt");
+    system("cls");
+    box(7,5,40,13);
+    gotoxy(10,7);
+    printf("Successfully Deleted.");
+    gotoxy(10,10);
+    printf("Press any key to continue.");
+    getch();
+    Administration_menu();
+}
+
+
+void Administration_menu()
+{
+     int choice;
+    system("cls");
+    box(7,1,73,17);
+    gotoxy(10,3);
+    printf("<--:Administration Menu:-->");
+    gotoxy(10,5);
+    printf("1 : Add.");
+    gotoxy(10,6);
+    printf("2 : View.");
+    gotoxy(10,7);
+    printf("3 : Modify.");
+    gotoxy(10,8);
+    printf("4 : Delete.");
+    gotoxy(10,9);
+    printf("5 : Exit.");
+    gotoxy(10,10);
+    printf("Enter your choice: ");
+    scanf("%d",&choice);
+    switch(choice)
+    {
+    case 1:
+        Administration_add();
+        break;
+    case 2:
+        view();
+        break;
+
+    case 3:
+        modify();
+        break
+
+    case 4:
+        deleterec();
+        break;
+
+    case 5:
+        exit(1);
+        break;
+
+    default:
+        gotoxy(10,15);
+        printf("Invalid Choice.");
+    }
+}
+void gotoxy(int x,int y)
+{
+        COORD c;
+        c.X=x;
+        c.Y=y;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),c);
+}
+
