@@ -34,28 +34,38 @@ This Road Management System is a console-based application written in C. It allo
 When the program starts, it presents the user with the initial menu:
 
 ```
-<--:Menu:-->
-1 : Sign In.
-2 : Sign Up.
-Enter your choice:
+ <--:Menu:-->                                                                                                       
+    1 : Sign In.                                                
+    2 : Sign Up.                                                
+    3 : Admin.                                         
+    4 : Exit.                                                   
+                                                              
+    Enter your choice:
 ```
 
 - **Sign In**: Prompts the user to enter their username and password to log in.
 - **Sign Up**: Allows the user to create a new account by entering their username, phone number, user ID, and password.
+- **Admin**: Prompts the user to enter the username and password to log in as admin.
 
 #### 2. Post Login Menu
 
 After logging in, the menu changes to:
 
 ```
-<--:Menu:-->
-1 : Administration.
-2 : Logout.
-Enter your choice:
+ <--:MENU:-->                                                   
+
+ Enter appropriate number to perform following task.            
+
+  1 : Add Record.                                                
+  2 : Search Record.                                             
+  3 : Exit.                                                      
+
+ Enter your choice:                                             
+       
 ```
 
-- **Administration**: Access the administration menu to manage road records.
-- **Logout**: Logs the user out and returns to the initial menu.
+- **Add Record**: Add a new road record by entering the starting point, ending point, and bus name.
+- **Logout**: Search bus name by entering the starting point, ending point .
 
 #### 3. Administration Menu
 
@@ -103,5 +113,3 @@ Enter your choice:
 - `fread()`: Reads from a file.
 - `fwrite()`: Writes to a file.
 - `remove()`: Deletes a file.
-
-
